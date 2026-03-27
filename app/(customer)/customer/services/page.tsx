@@ -58,23 +58,25 @@ export default function CustomerServices() {
     ])
     setServices(svcRes.data || [])
 
-    // 1. Try to find user in Supabase
-    const { data: userRow } = await supabase.from('users').select('id').eq('clerk_id', user.id).single()
-    
+    // 1. Check if user and customer profile exist
+    const { data: userRow } = await supabase.from('users').select('id').eq('clerk_id', user.id).maybeSingle()
     let currentCustomerId = ''
 
     if (userRow) {
-      const { data: custRow } = await supabase.from('customers').select('id').eq('user_id', userRow.id).single()
+      const { data: custRow } = await supabase.from('customers').select('id').eq('user_id', userRow.id).maybeSingle()
       if (custRow) currentCustomerId = custRow.id
-    } else {
-      // 2. Profile missing? Automatically Sync (bypasses RLS)
+    }
+
+    // 2. Profile or Customer missing? Automatically Sync & Create (bypasses RLS)
+    if (!currentCustomerId) {
       try {
         const res = await fetch('/api/user/sync', {
           method: 'POST',
           body: JSON.stringify({
             clerkId: user.id,
             email: user.primaryEmailAddress?.emailAddress,
-            name: user.fullName || user.firstName
+            name: user.fullName || user.firstName,
+            profilePhoto: user.imageUrl
           })
         })
         const result = await res.json()
