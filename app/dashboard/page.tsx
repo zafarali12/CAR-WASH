@@ -97,14 +97,10 @@ export default async function DashboardRedirect({ searchParams }: { searchParams
         phone: user!.phoneNumbers[0]?.phoneNumber || '—',
         is_approved: false
       })
-      redirect('/driver-pending')
     }
 
-    if (!driver.is_approved) {
-      redirect('/driver-pending')
-    }
-    
     redirect('/driver/dashboard')
+
   }
 
   if (role === 'admin' || role === 'sub_admin') {

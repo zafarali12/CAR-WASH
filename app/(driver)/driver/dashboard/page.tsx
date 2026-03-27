@@ -239,9 +239,12 @@ export default function DriverDashboard() {
           <Clock size={40} />
         </div>
         <h2 className="text-xl font-bold text-gray-900 mb-2">Approval Pending</h2>
-        <p className="text-sm text-gray-500 max-w-xs mx-auto">
-          Your account is under review by our admin team. We'll notify you as soon as you're cleared for jobs!
+        <p className="text-sm text-gray-500 max-w-xs mx-auto mb-6">
+          Your account is currently under review by our admin team. Once approved, you will receive an approval message <span className="font-semibold text-gray-700">via email</span>!
         </p>
+        <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100 flex items-center gap-3 justify-center text-sm font-medium text-gray-600">
+          We will notify you at <span className="text-gray-900 font-bold">{user?.primaryEmailAddress?.emailAddress}</span>
+        </div>
       </div>
     )
   }
