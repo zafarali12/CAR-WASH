@@ -54,7 +54,7 @@ export default function CustomerDashboard() {
         .select(`
           id, status, scheduled_date, scheduled_time, address, final_price,
           services(name, category),
-          drivers(name, phone, rating, profile_photo),
+          drivers(name, phone, rating),
           vehicles(make, model)
         `)
         .eq('customer_id', customerRes.data.id)
