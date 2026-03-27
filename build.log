@@ -1,0 +1,44 @@
+﻿
+> carwash-booking-app@1.0.0 build
+> next build
+
+  Γû▓ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to compile.
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (Failed   
+  to compile.:String) [],    
+ RemoteException
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+
+./app/api/payments/create-int
+ent/route.ts
+Module not found: Can't 
+resolve 'stripe'
+
+https://nextjs.org/docs/messa
+ges/module-not-found
+
+./app/api/webhooks/stripe/rou
+te.ts
+Module not found: Can't 
+resolve 'stripe'
+
+https://nextjs.org/docs/messa
+ges/module-not-found
+
+
+> Build failed because of 
+webpack errors

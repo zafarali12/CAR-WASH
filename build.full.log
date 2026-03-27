@@ -1,0 +1,68 @@
+﻿
+> carwash-booking-app@1.0.0 build
+> next build
+
+  Γû▓ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ Γ£ô Compiled successfully
+   Linting and checking validity of types ...
+node.exe : Failed to compile.
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpeci    fied: 
+(Failed to     
+compile.:String)     [], 
+RemoteExcepti    on
+    + FullyQualifiedE    
+rrorId : NativeCo    
+mmandError
+ 
+
+./app/api/payments/create-int
+ent/route.ts:7:61
+Type error: Type 
+'"2024-04-10"' is not 
+assignable to type 
+'"2026-02-25.clover"'.
+
+[0m [90m  5 |[39m 
+[36mimport[39m 
+[33mStripe[39m 
+[36mfrom[39m 
+[32m'stripe'[39m[0m
+[0m [90m  6 |[39m[0m
+[0m[31m[1m>[22m[39m[90m
+  7 |[39m [36mconst[39m 
+stripe [33m=[39m 
+[36mnew[39m [33mStripe[39
+m(process[33m.[39menv[33m.
+[39m[33mSTRIPE_SECRET_KEY[
+39m[33m![39m[33m,[39m { 
+apiVersion[33m:[39m 
+[32m'2024-04-10'[39m })[0m
+[0m [90m    |[39m         
+                             
+                       
+[31m[1m^[22m[39m[0m
+[0m [90m  8 |[39m[0m
+[0m [90m  9 |[39m 
+[36mexport[39m 
+[36masync[39m 
+[36mfunction[39m [33mPOST
+[39m(req[33m:[39m 
+[33mRequest[39m) {[0m
+[0m [90m 10 |[39m   
+[36mconst[39m { userId } 
+[33m=[39m [36mawait[39m 
+auth()[0m
+Next.js build worker exited 
+with code: 1 and signal: null
