@@ -1,4 +1,4 @@
-import { auth, currentUser, clerkClient } from '@clerk/nextjs/server'
+import { auth, currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { createAdminSupabaseClient } from '@/lib/supabase/server'
@@ -28,82 +28,73 @@ export default async function DashboardRedirect({ searchParams }: { searchParams
     const { data: isWhitelisted } = await supabase
       .from('admin_whitelist')
       .select('email')
-      .eq('email', user.emailAddresses[0].emailAddress)
+      .eq('email', user!.emailAddresses[0].emailAddress)
       .maybeSingle()
 
     // 1b. Initializing new user
     const roleToSet = isWhitelisted ? 'admin' : detectedRole === 'driver' ? 'driver' : 'customer'
-    console.log('AUTO-SYNC: Creating new user with role:', roleToSet)
     
     const { data: newUser, error } = await supabase
       .from('users')
       .insert({
         clerk_id: userId,
-        email: user.emailAddresses[0].emailAddress,
+        email: user!.emailAddresses[0].emailAddress,
         role: roleToSet
       })
       .select('id, role')
       .single()
     
-    if (error) {
-       console.error('SYNC ERROR:', error)
-       redirect('/customer/dashboard')
+    if (error || !newUser) {
+      redirect('/customer/dashboard')
     }
     dbUser = newUser
   }
   
   // 1c. FOR EXISTING USERS: Check if they should be upgraded to Admin
-  if (dbUser.role !== 'admin') {
+  if (dbUser!.role !== 'admin') {
     const { data: isWhitelisted } = await supabase
       .from('admin_whitelist')
       .select('email')
-      .eq('email', user.emailAddresses[0].emailAddress)
+      .eq('email', user!.emailAddresses[0].emailAddress)
       .maybeSingle()
     
     if (isWhitelisted) {
-      console.log('UPGRADING: Existing user found in whitelist. Setting to Admin.')
       const { data: upgraded } = await supabase
         .from('users')
         .update({ role: 'admin' })
-        .eq('id', dbUser.id)
+        .eq('id', dbUser!.id)
         .select('id, role')
         .single()
       if (upgraded) dbUser = upgraded
     }
   }
 
-  // If we found them in DB as customer but cookie/param says driver, upgrade them 
-  if (dbUser.role === 'customer' && (preferredRole === 'driver' || detectedRole === 'driver')) {
+  // 1d. If user wants to become a driver, upgrade their role in DB
+  if (dbUser!.role === 'customer' && (preferredRole === 'driver' || detectedRole === 'driver')) {
     const { data: upgraded } = await supabase
        .from('users')
        .update({ role: 'driver' })
-       .eq('id', dbUser.id)
+       .eq('id', dbUser!.id)
        .select('id, role')
        .single()
-    if (upgraded) {
-      dbUser = upgraded
-      // Sync to Clerk so middleware reads correct role on next request
-      await clerkClient.users.updateUserMetadata(userId!, {
-        publicMetadata: { role: 'driver' }
-      })
-    }
+    if (upgraded) dbUser = upgraded
   }
 
-  const role = dbUser.role
+  const role = dbUser!.role
 
-  // 2. DRIVER INITIALIZATION
+  // 2. DRIVER INITIALIZATION + ROUTING
   if (role === 'driver') {
     const { data: driver } = await supabase
       .from('drivers')
       .select('is_approved')
-      .eq('user_id', dbUser.id)
+      .eq('user_id', dbUser!.id)
       .maybeSingle()
 
     if (!driver) {
       await supabase.from('drivers').insert({
-        user_id: dbUser.id,
-        name: `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'New Driver',
-        phone: user.phoneNumbers[0]?.phoneNumber || '—',
+        user_id: dbUser!.id,
+        name: `${user!.firstName || ''} ${user!.lastName || ''}`.trim() || 'New Driver',
+        phone: user!.phoneNumbers[0]?.phoneNumber || '—',
         is_approved: false
       })
       redirect('/driver-pending')
@@ -123,6 +114,3 @@ export default async function DashboardRedirect({ searchParams }: { searchParams
   // Default for customers
   redirect('/customer/dashboard')
 }
-
-
-
