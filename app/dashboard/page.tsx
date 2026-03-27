@@ -50,23 +50,30 @@ export default async function DashboardRedirect({ searchParams }: { searchParams
     dbUser = newUser
   }
   
-  // 1c. FOR EXISTING USERS: Check if they should be upgraded to Admin
-  if (dbUser!.role !== 'admin') {
-    const { data: isWhitelisted } = await supabase
-      .from('admin_whitelist')
-      .select('email')
-      .eq('email', user!.emailAddresses[0].emailAddress)
-      .maybeSingle()
-    
-    if (isWhitelisted) {
-      const { data: upgraded } = await supabase
-        .from('users')
-        .update({ role: 'admin' })
-        .eq('id', dbUser!.id)
-        .select('id, role')
-        .single()
-      if (upgraded) dbUser = upgraded
-    }
+  // 1c. Secure Role Enforcement: Check Whitelist for Admins
+  const { data: isWhitelisted } = await supabase
+    .from('admin_whitelist')
+    .select('email')
+    .eq('email', user!.emailAddresses[0].emailAddress)
+    .maybeSingle()
+
+  if (isWhitelisted && dbUser!.role !== 'admin') {
+    const { data: upgraded } = await supabase
+      .from('users')
+      .update({ role: 'admin' })
+      .eq('id', dbUser!.id)
+      .select('id, role')
+      .single()
+    if (upgraded) dbUser = upgraded
+  } else if (!isWhitelisted && dbUser!.role === 'admin') {
+    // SECURITY DOWNGRADE: Role says admin but email not in whitelist!
+    const { data: downgraded } = await supabase
+      .from('users')
+      .update({ role: 'customer' })
+      .eq('id', dbUser!.id)
+      .select('id, role')
+      .single()
+    if (downgraded) dbUser = downgraded
   }
 
   // 1d. If user wants to become a driver, upgrade their role in DB
