@@ -1,4 +1,4 @@
-import { auth, currentUser } from '@clerk/nextjs/server'
+import { auth, currentUser, clerkClient } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { createAdminSupabaseClient } from '@/lib/supabase/server'
@@ -72,16 +72,21 @@ export default async function DashboardRedirect({ searchParams }: { searchParams
     }
   }
 
-  // If we found them in DB as customer but cookie says driver, upgrade them 
-  // (Only for first-time onboarding via landing page)
-  if (dbUser.role === 'customer' && preferredRole === 'driver') {
+  // If we found them in DB as customer but cookie/param says driver, upgrade them 
+  if (dbUser.role === 'customer' && (preferredRole === 'driver' || detectedRole === 'driver')) {
     const { data: upgraded } = await supabase
        .from('users')
        .update({ role: 'driver' })
        .eq('id', dbUser.id)
        .select('id, role')
        .single()
-    if (upgraded) dbUser = upgraded
+    if (upgraded) {
+      dbUser = upgraded
+      // Sync to Clerk so middleware reads correct role on next request
+      await clerkClient.users.updateUserMetadata(userId!, {
+        publicMetadata: { role: 'driver' }
+      })
+    }
   }
 
   const role = dbUser.role

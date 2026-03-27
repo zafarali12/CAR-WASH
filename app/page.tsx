@@ -84,9 +84,15 @@ export default function LandingPage() {
                 <Link href="/customer/dashboard" className="w-full sm:w-auto px-8 md:px-12 py-4 md:py-5 bg-gray-900 text-white rounded-2xl text-base md:text-lg font-bold hover:bg-black transition-all hover:-translate-y-1 hover:shadow-2xl active:scale-95 text-center">
                   Book a Wash Now
                 </Link>
-                <Link href="/driver/dashboard" className="w-full sm:w-auto px-8 md:px-12 py-4 md:py-5 bg-white text-gray-900 border-2 border-gray-100 rounded-2xl text-base md:text-lg font-bold hover:border-gray-200 hover:bg-gray-50 transition-all hover:-translate-y-1 active:scale-95 text-center">
+                <button
+                  onClick={() => {
+                    document.cookie = "preferred_role=driver; path=/; max-age=600"
+                    window.location.href = "/dashboard?role=driver"
+                  }}
+                  className="w-full sm:w-auto px-8 md:px-12 py-4 md:py-5 bg-white text-gray-900 border-2 border-gray-100 rounded-2xl text-base md:text-lg font-bold hover:border-gray-200 hover:bg-gray-50 transition-all hover:-translate-y-1 active:scale-95 text-center"
+                >
                   Drive & Earn
-                </Link>
+                </button>
               </>
             ) : (
               <>
