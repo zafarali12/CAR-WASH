@@ -8,11 +8,10 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/webhooks(.*)',
+  '/driver-pending(.*)',
 ])
 
 const isAdminRoute = createRouteMatcher(['/admin(.*)'])
-const isDriverRoute = createRouteMatcher(['/driver(.*)'])
-const isCustomerRoute = createRouteMatcher(['/customer(.*)'])
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,26 +22,26 @@ const supabaseAdmin = createClient(
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY })
 
 export default clerkMiddleware(async (auth, req) => {
+  // Allow public routes without any check
   if (isPublicRoute(req)) return
 
+  // All other routes require authentication
   const { userId, sessionClaims } = auth().protect()
-  let email = (sessionClaims?.email as string) || (sessionClaims as any)?.primary_email
-  let role = (sessionClaims?.publicMetadata as any)?.role as string || 'customer'
 
-  // Admin route protection: Extremely Strict
+  // Admin route protection: Email whitelist only
   if (isAdminRoute(req)) {
-    // If email is not in session claims, fetch it from Clerk API (backup)
-    if (!email) {
+    let email = (sessionClaims?.email as string) || (sessionClaims as any)?.primary_email
+
+    // Fallback: fetch email directly from Clerk if not in session claims
+    if (!email && userId) {
       const user = await clerk.users.getUser(userId)
       email = user.emailAddresses[0]?.emailAddress
     }
 
     if (!email) {
-      console.warn(`SECURITY ALERT: No email found for user ${userId}`)
       return NextResponse.redirect(new URL('/dashboard', req.url))
     }
 
-    // 1. Check if their email is in the admin_whitelist in Supabase
     const { data: whitelist } = await supabaseAdmin
       .from('admin_whitelist')
       .select('email')
@@ -53,24 +52,15 @@ export default clerkMiddleware(async (auth, req) => {
       console.warn(`SECURITY ALERT: Unauthorized Admin Access Attempt by ${email}`)
       return NextResponse.redirect(new URL('/dashboard', req.url))
     }
-    
-    // 2. Verified as admin, allow access
+
+    // Whitelisted admin — allow access
     return
   }
 
-  // Driver route protection
-  if (isDriverRoute(req) && role !== 'driver' && role !== 'admin') {
-    return NextResponse.redirect(new URL('/dashboard', req.url))
-  }
-
-  // Customer route protection
-  if (isCustomerRoute(req) && role !== 'customer' && role !== 'admin') {
-    return NextResponse.redirect(new URL('/dashboard', req.url))
-  }
+  // All other authenticated routes (customer, driver) — just allow if logged in
+  // Role-based routing is handled by /dashboard hub and individual page guards
 })
 
 export const config = {
   matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
 }
-
-
