@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useUser } from '@clerk/nextjs'
 import { Clock, Check, ChevronRight, MapPin, Tag, X } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { validateCouponAction, incrementCouponUsageAction } from './actions'
 
 type Step = 'service' | 'vehicle' | 'location' | 'datetime' | 'confirm'
 
@@ -108,19 +109,15 @@ export default function CustomerServices() {
   async function applyCoupon() {
     if (!couponCode.trim()) return
     setCouponLoading(true)
-    const { data, error } = await supabase
-      .from('coupons')
-      .select('*')
-      .eq('code', couponCode.toUpperCase())
-      .eq('is_active', true)
-      .gte('valid_until', new Date().toISOString())
-      .single()
+    
+    const result = await validateCouponAction(couponCode)
 
-    if (error || !data) {
-      toast.error('Invalid or expired coupon')
+    if (result.error || !result.data) {
+      toast.error(result.error || 'Invalid or expired coupon')
       setCouponLoading(false)
       return
     }
+    const data = result.data
     if (data.max_uses && data.used_count >= data.max_uses) {
       toast.error('Coupon usage limit reached')
       setCouponLoading(false)
@@ -160,6 +157,12 @@ export default function CustomerServices() {
       toast.error('Please complete all fields')
       return
     }
+
+    if (couponCode.trim() && !appliedCoupon) {
+      toast.error('Please click "Apply" to use your entered coupon first.')
+      return
+    }
+
     setSubmitting(true)
     try {
       const { data, error } = await supabase
@@ -183,6 +186,11 @@ export default function CustomerServices() {
         .single()
 
       if (error) throw error
+
+      if (appliedCoupon?.id) {
+        await incrementCouponUsageAction(appliedCoupon.id)
+      }
+
       toast.success('Booking confirmed!')
       router.push(`/customer/bookings/${data.id}`)
     } catch (err: any) {
@@ -482,8 +490,9 @@ export default function CustomerServices() {
                   placeholder="Coupon code"
                   value={couponCode}
                   onChange={e => setCouponCode(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && applyCoupon()}
                 />
-                <button className="btn-secondary px-4" onClick={applyCoupon} disabled={couponLoading}>
+                <button type="button" className="btn-secondary px-4" onClick={applyCoupon} disabled={couponLoading}>
                   Apply
                 </button>
               </div>

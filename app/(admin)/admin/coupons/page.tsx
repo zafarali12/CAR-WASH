@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Plus, Edit2, Trash2, Tag, Copy } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { format } from 'date-fns'
+import { upsertCoupon, deleteCouponAction, toggleCouponActiveAction, fetchCouponsAction } from './actions'
 
 interface CouponForm {
   code: string
@@ -38,11 +39,12 @@ export default function AdminCoupons() {
   useEffect(() => { fetchCoupons() }, [])
 
   async function fetchCoupons() {
-    const { data } = await supabase
-      .from('coupons')
-      .select('*')
-      .order('created_at', { ascending: false })
-    setCoupons(data || [])
+    const result = await fetchCouponsAction()
+    if (result.data) {
+      setCoupons(result.data)
+    } else {
+      toast.error(result.error || 'Failed to load coupons')
+    }
     setLoading(false)
   }
 
@@ -98,12 +100,10 @@ export default function AdminCoupons() {
       valid_until: form.valid_until,
       is_active: form.is_active,
     }
-    const { error } = editId
-      ? await supabase.from('coupons').update(payload).eq('id', editId)
-      : await supabase.from('coupons').insert(payload)
+    const result = await upsertCoupon(payload, editId)
 
-    if (error) {
-      toast.error(error.message || 'Failed to save coupon')
+    if (result.error) {
+      toast.error(result.error || 'Failed to save coupon')
     } else {
       toast.success(editId ? 'Coupon updated!' : 'Coupon created!')
       setShowModal(false)
@@ -114,16 +114,22 @@ export default function AdminCoupons() {
 
   async function deleteCoupon(id: string) {
     if (!confirm('Delete this coupon?')) return
-    const { error } = await supabase.from('coupons').delete().eq('id', id)
-    if (!error) {
+    const result = await deleteCouponAction(id)
+    if (!result.error) {
       setCoupons(cs => cs.filter(c => c.id !== id))
       toast.success('Coupon deleted')
+    } else {
+      toast.error(result.error)
     }
   }
 
   async function toggleActive(id: string, current: boolean) {
-    await supabase.from('coupons').update({ is_active: !current }).eq('id', id)
-    setCoupons(cs => cs.map(c => c.id === id ? { ...c, is_active: !current } : c))
+    const result = await toggleCouponActiveAction(id, current)
+    if (!result.error) {
+      setCoupons(cs => cs.map(c => c.id === id ? { ...c, is_active: !current } : c))
+    } else {
+      toast.error(result.error)
+    }
   }
 
   function formatValue(c: any) {
