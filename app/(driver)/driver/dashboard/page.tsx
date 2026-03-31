@@ -128,13 +128,19 @@ export default function DriverDashboard() {
       if (pendingRes.data) setPendingRequest(pendingRes.data)
     }
 
-    // Stats
-    const todayEarnings = (bookingsRes.data || [])
-      .filter((b: any) => b.status === 'completed')
-      .reduce((s: number, b: any) => s + b.final_price, 0)
+    // Stats (Total Earnings)
+    const statsRes = await supabase
+      .from('bookings')
+      .select('final_price')
+      .eq('driver_id', driverRes.id)
+      .eq('status', 'completed')
+
+    const totalEarnings = (statsRes.data || []).reduce((s: number, b: any) => s + (b.final_price || 0), 0)
+    const totalJobs = (statsRes.data || []).length
+
     setStats({
-      today: todayEarnings,
-      jobs: (bookingsRes.data || []).filter((b: any) => b.status === 'completed').length,
+      today: totalEarnings,
+      jobs: totalJobs,
       rating: driverRes.rating || 0,
     })
     setLoading(false)
@@ -273,8 +279,8 @@ export default function DriverDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Today's Earnings", value: `$${stats.today.toFixed(0)}` },
-          { label: 'Jobs Today', value: stats.jobs },
+          { label: "Total Earnings", value: `$${stats.today.toFixed(0)}` },
+          { label: 'Total Jobs', value: stats.jobs },
           { label: 'Rating', value: stats.rating > 0 ? stats.rating.toFixed(1) : '—' },
         ].map(s => (
           <div key={s.label} className="stat-card p-3 text-center">
