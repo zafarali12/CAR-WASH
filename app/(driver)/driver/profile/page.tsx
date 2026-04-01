@@ -28,7 +28,16 @@ export default function DriverProfile() {
       .eq('user_id', userRes.data.id)
       .single()
     if (driverRes.data) {
-      setDriver(driverRes.data)
+      const statsRes = await supabase
+        .from('bookings')
+        .select('final_price')
+        .eq('driver_id', driverRes.data.id)
+        .eq('status', 'completed')
+        
+      const realEarnings = (statsRes.data || []).reduce((s: number, b: any) => s + (b.final_price || 0), 0)
+      const realJobs = (statsRes.data || []).length
+      
+      setDriver({ ...driverRes.data, total_earnings: realEarnings, completed_jobs: realJobs })
       setForm({ vehicle_info: driverRes.data.vehicle_info || '', license_number: driverRes.data.license_number || '' })
     }
     setLoading(false)

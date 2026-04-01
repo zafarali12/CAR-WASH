@@ -24,6 +24,7 @@ export default function DriverDashboard() {
   const [pendingRequest, setPendingRequest] = useState<any>(null)
   const [activeJob, setActiveJob] = useState<any>(null)
   const [todayJobs, setTodayJobs] = useState<any[]>([])
+  const [recentReviews, setRecentReviews] = useState<any[]>([])
   const [stats, setStats] = useState({ today: 0, jobs: 0, rating: 0 })
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
@@ -137,6 +138,15 @@ export default function DriverDashboard() {
 
     const totalEarnings = (statsRes.data || []).reduce((s: number, b: any) => s + (b.final_price || 0), 0)
     const totalJobs = (statsRes.data || []).length
+
+    // Reviews
+    const reviewsRes = await supabase
+      .from('reviews')
+      .select('rating, comment, created_at, customers(name)')
+      .eq('driver_id', driverRes.id)
+      .order('created_at', { ascending: false })
+      .limit(5)
+    setRecentReviews(reviewsRes.data || [])
 
     setStats({
       today: totalEarnings,
@@ -406,6 +416,36 @@ export default function DriverDashboard() {
                 }`}>
                   {job.status.replace(/_/g, ' ')}
                 </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Recent Reviews */}
+      <div className="card p-4">
+        <h2 className="font-semibold mb-3">Recent Reviews</h2>
+        {recentReviews.length === 0 ? (
+          <p className="text-sm text-gray-400 text-center py-4">No reviews yet</p>
+        ) : (
+          <div className="space-y-3">
+            {recentReviews.map((r, i) => (
+              <div key={i} className="p-3 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="flex justify-between items-start mb-1">
+                  <div>
+                    <span className="font-medium text-sm">{r.customers?.name || 'Customer'}</span>
+                    <span className="text-xs text-gray-400 ml-2">{new Date(r.created_at).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Star size={12} className="text-amber-500 fill-amber-500" />
+                    <span className="text-sm font-semibold">{r.rating}/5</span>
+                  </div>
+                </div>
+                {r.comment ? (
+                  <p className="text-sm text-gray-600 mt-1">{r.comment}</p>
+                ) : (
+                  <p className="text-xs text-gray-400 italic mt-1">No comment provided</p>
+                )}
               </div>
             ))}
           </div>

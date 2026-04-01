@@ -23,7 +23,7 @@ export default function AdminDrivers() {
     setLoading(true)
     let query = supabase
       .from('drivers')
-      .select('*')
+      .select('*, reviews(rating, comment, created_at)')
       .order('created_at', { ascending: false })
 
     if (filter === 'pending') query = query.eq('is_approved', false)
@@ -40,7 +40,16 @@ export default function AdminDrivers() {
       // Har driver ka email alag se fetch karein (Robust approach)
       const formattedDrivers = await Promise.all((driversData || []).map(async (d) => {
         const { data: userData } = await supabase.from('users').select('email').eq('id', d.user_id).single()
-        return { ...d, users: userData || { email: 'Missing' } }
+        
+        let realEarnings = 0
+        let realJobs = 0
+        const { data: stats } = await supabase.from('bookings').select('final_price').eq('driver_id', d.id).eq('status', 'completed')
+        if (stats) {
+          realEarnings = stats.reduce((s: number, b: any) => s + (b.final_price || 0), 0)
+          realJobs = stats.length
+        }
+        
+        return { ...d, users: userData || { email: 'Missing' }, completed_jobs: realJobs, total_earnings: realEarnings }
       }))
       setDrivers(formattedDrivers)
     }
@@ -295,6 +304,29 @@ export default function AdminDrivers() {
                       View ID
                     </a>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Reviews */}
+            {selected.reviews && selected.reviews.length > 0 && (
+              <div className="mb-5 border-t border-gray-100 pt-5">
+                <p className="text-sm font-medium mb-3">Customer Reviews</p>
+                <div className="space-y-3 max-h-40 overflow-y-auto pr-2">
+                  {selected.reviews.sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).map((r: any, i: number) => (
+                    <div key={i} className="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                      <div className="flex items-center gap-1 mb-1">
+                        <Star size={12} className="text-amber-500 fill-amber-500" />
+                        <span className="font-semibold text-sm">{r.rating}/5</span>
+                        <span className="text-xs text-gray-400 ml-2">{new Date(r.created_at).toLocaleDateString()}</span>
+                      </div>
+                      {r.comment ? (
+                        <p className="text-sm text-gray-600 mt-1">{r.comment}</p>
+                      ) : (
+                        <p className="text-xs text-gray-400 italic mt-1">No comment provided</p>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

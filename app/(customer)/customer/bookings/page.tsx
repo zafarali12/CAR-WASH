@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { Clock, MapPin, Star, ChevronRight, X } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { submitReviewAction } from './actions'
 
 type Filter = 'all' | 'active' | 'completed' | 'cancelled'
 
@@ -50,7 +51,8 @@ export default function CustomerBookings() {
         id, status, final_price, total_price, discount_amount,
         scheduled_date, scheduled_time, address, created_at, payment_status,
         services(name, category, duration),
-        drivers(name, rating, phone),
+        driver_id,
+        drivers(id, name, rating, phone),
         vehicles(make, model, color, plate_number),
         reviews(id, rating, comment)
       `)
@@ -88,19 +90,23 @@ export default function CustomerBookings() {
     if (!reviewModal) return
     const userRes = await supabase.from('users').select('id').eq('clerk_id', user?.id || '').single()
     const custRes = await supabase.from('customers').select('id').eq('user_id', userRes.data?.id || '').single()
-    const { error } = await supabase.from('reviews').insert({
+    
+    const result = await submitReviewAction({
       booking_id: reviewModal.id,
       customer_id: custRes.data?.id,
-      driver_id: reviewModal.drivers?.id,
+      driver_id: reviewModal.drivers?.id || reviewModal.driver_id,
       rating,
       comment,
     })
-    if (!error) {
+
+    if (result.success) {
       toast.success('Review submitted! Thank you.')
       setReviewModal(null)
       setRating(5)
       setComment('')
       fetchBookings()
+    } else {
+      toast.error(result.error || 'Failed to submit review')
     }
   }
 
