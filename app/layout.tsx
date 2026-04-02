@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'CarWash - Book Your Car Wash',
   description: 'Premium car wash booking at your doorstep',
-  manifest: '/manifest.json?v=1.5',
+  manifest: '/manifest.json?v=2.0',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
