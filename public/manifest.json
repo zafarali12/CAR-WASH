@@ -1,5 +1,5 @@
 {
-  "id": "car-wash-pwa-v1.1",
+  "id": "car-wash-pwa-v1.3",
   "name": "CarWash App",
   "short_name": "CarWash",
   "description": "Premium car wash booking at your doorstep",
@@ -7,19 +7,22 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
+  "dir": "ltr",
+  "lang": "en",
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/icon-192-192.jpg",
+      "src": "/icon-192-192.png",
       "sizes": "1024x1024",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-512-512.jpg",
+      "src": "/icon-512-512.png",
       "sizes": "1024x1024",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "maskable"
     }
   ],
@@ -35,9 +38,9 @@
       "url": "/customer/services",
       "icons": [
         {
-          "src": "/icon-192-192.jpg",
+          "src": "/icon-192-192.png",
           "sizes": "1024x1024",
-          "type": "image/jpeg"
+          "type": "image/png"
         }
       ]
     },
@@ -48,25 +51,25 @@
       "url": "/customer/bookings",
       "icons": [
         {
-          "src": "/icon-192-192.jpg",
+          "src": "/icon-192-192.png",
           "sizes": "1024x1024",
-          "type": "image/jpeg"
+          "type": "image/png"
         }
       ]
     }
   ],
   "screenshots": [
     {
-      "src": "/icon-512-512.jpg",
+      "src": "/icon-512-512.png",
       "sizes": "1024x1024",
-      "type": "image/jpeg",
+      "type": "image/png",
       "form_factor": "wide",
       "label": "Desktop Dashboard"
     },
     {
-      "src": "/icon-512-512.jpg",
+      "src": "/icon-512-512.png",
       "sizes": "1024x1024",
-      "type": "image/jpeg",
+      "type": "image/png",
       "form_factor": "narrow",
       "label": "Mobile Dashboard"
     }
