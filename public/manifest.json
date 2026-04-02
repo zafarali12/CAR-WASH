@@ -1,4 +1,5 @@
 {
+  "id": "car-wash-pwa-v1.1",
   "name": "CarWash App",
   "short_name": "CarWash",
   "description": "Premium car wash booking at your doorstep",
@@ -10,33 +11,64 @@
   "theme_color": "#2563eb",
   "icons": [
     {
-      "src": "/icon-192-192.png",
-      "sizes": "192x192 1024x1024",
-      "type": "image/png",
+      "src": "/icon-192-192.jpg",
+      "sizes": "1024x1024",
+      "type": "image/jpeg",
       "purpose": "any"
     },
     {
-      "src": "/icon-512-512.png",
-      "sizes": "512x512 1024x1024",
-      "type": "image/png",
+      "src": "/icon-512-512.jpg",
+      "sizes": "1024x1024",
+      "type": "image/jpeg",
       "purpose": "maskable"
     }
   ],
-  "categories": ["business", "lifestyle"],
+  "categories": [
+    "business",
+    "lifestyle"
+  ],
   "shortcuts": [
     {
       "name": "Book a Wash",
       "short_name": "Book",
       "description": "Schedule a new car wash service",
       "url": "/customer/services",
-      "icons": [{ "src": "/icon-192-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/icon-192-192.jpg",
+          "sizes": "1024x1024",
+          "type": "image/jpeg"
+        }
+      ]
     },
     {
       "name": "My Bookings",
       "short_name": "History",
       "description": "Check your wash status and history",
       "url": "/customer/bookings",
-      "icons": [{ "src": "/icon-192-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/icon-192-192.jpg",
+          "sizes": "1024x1024",
+          "type": "image/jpeg"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/icon-512-512.jpg",
+      "sizes": "1024x1024",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Desktop Dashboard"
+    },
+    {
+      "src": "/icon-512-512.jpg",
+      "sizes": "1024x1024",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Mobile Dashboard"
     }
   ]
 }
