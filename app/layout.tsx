@@ -17,7 +17,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'CarWash - Book Your Car Wash',
   description: 'Premium car wash booking at your doorstep',
-  manifest: '/manifest.json?v=1.4',
+  manifest: '/manifest.json?v=1.5',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon-192-192.png', sizes: '1024x1024', type: 'image/png' },
-      { url: '/icon-512-512.png', sizes: '1024x1024', type: 'image/png' },
+      { url: '/icon-192-192.png', sizes: '192x192 1024x1024', type: 'image/png' },
+      { url: '/icon-512-512.png', sizes: '512x512 1024x1024', type: 'image/png' },
     ],
     shortcut: '/icon-192-192.png',
     apple: [
