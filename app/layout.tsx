@@ -1,5 +1,5 @@
 // app/layout.tsx
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
@@ -7,10 +7,29 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const viewport: Viewport = {
+  themeColor: '#2563eb',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+}
+
 export const metadata: Metadata = {
   title: 'CarWash - Book Your Car Wash',
   description: 'Premium car wash booking at your doorstep',
   manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'CarWash',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: '/icon-192-192.png',
+    apple: '/icon-192-192.png',
+  },
 }
 
 export default function RootLayout({
