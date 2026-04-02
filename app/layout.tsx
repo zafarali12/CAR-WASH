@@ -17,13 +17,13 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: 'CarWash - Book Your Car Wash',
   description: 'Premium car wash booking at your doorstep',
-  manifest: '/manifest.json?v=2.0',
+  manifest: '/manifest.json?v=3.0',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
     title: 'CarWash',
     startupImage: [
-      { url: '/icon-512-512.png', media: '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)' }
+      { url: '/logo.png', media: '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)' }
     ],
   },
   formatDetection: {
@@ -31,12 +31,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon-192-192.png', sizes: '192x192 1024x1024', type: 'image/png' },
-      { url: '/icon-512-512.png', sizes: '512x512 1024x1024', type: 'image/png' },
+      { url: '/logo.png', sizes: '192x192 512x512 1024x1024', type: 'image/png' },
     ],
-    shortcut: '/icon-192-192.png',
+    shortcut: '/logo.png',
     apple: [
-      { url: '/icon-192-192.png', sizes: '1024x1024', type: 'image/png' },
+      { url: '/logo.png', sizes: '192x192 512x512 1024x1024', type: 'image/png' },
     ],
   },
 }
