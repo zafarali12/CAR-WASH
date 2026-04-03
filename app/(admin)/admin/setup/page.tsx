@@ -1,10 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { setUserRole } from '@/lib/actions/roles'
-import { useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import toast from 'react-hot-toast'
-import { Shield, User, Car, Check, Loader2 } from 'lucide-react'
+import { Shield, User, Car, Check, Loader2, Zap } from 'lucide-react'
 
 export default function AdminSetup() {
   const { user, isLoaded } = useUser()
@@ -29,6 +30,35 @@ export default function AdminSetup() {
       }
     } catch (err) {
       toast.error('Failed to update role')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const syncDatabasePrices = async () => {
+    if (!confirm('This will update all your current services to the new SAR standard pricing. Continue?')) return
+    setLoading(true)
+    try {
+      const supabase = createClient()
+      
+      // Update one by one to ensure we match existing names
+      const updates = [
+        { name: 'Basic Wash', price: 40, duration: 30 },
+        { name: 'Premium Wash', price: 80, duration: 60 },
+        { name: 'Interior Clean', price: 70, duration: 45 },
+        { name: 'Full Detail', price: 200, duration: 180 },
+        { name: 'Exterior Detail', price: 150, duration: 120 }
+      ]
+
+      for (const item of updates) {
+        await supabase.from('services')
+          .update({ price: item.price, duration: item.duration, is_active: true })
+          .ilike('name', item.name) // Use ilike for case-insensitive matching
+      }
+
+      toast.success('Database prices updated successfully!')
+    } catch (err: any) {
+      toast.error('Sync failed: ' + (err.message || 'Error'))
     } finally {
       setLoading(false)
     }
@@ -139,9 +169,23 @@ export default function AdminSetup() {
       {loading && (
         <div className="flex items-center gap-2 text-sm text-gray-400">
           <Loader2 className="animate-spin" size={16} />
-          Syncing with Clerk & Supabase...
+          Updating...
         </div>
       )}
+
+      <div className="w-full max-w-sm pt-8 border-t border-gray-100">
+        <button 
+          onClick={syncDatabasePrices} 
+          disabled={loading}
+          className="w-full btn-secondary py-4 rounded-2xl flex items-center justify-center gap-3 border-2 border-primary-100 bg-primary-50/30 font-bold"
+        >
+          <Zap size={20} className="text-primary-600 fill-primary-600" />
+          Sync Database to SAR Prices
+        </button>
+        <p className="text-[10px] text-gray-400 mt-3 text-center uppercase tracking-widest font-black opacity-50">
+          Reset all services to Basic = 40, Premium = 80, etc.
+        </p>
+      </div>
 
       <div className="text-center mt-10">
         <p className="text-[10px] text-gray-300 uppercase tracking-widest font-bold">Authentication Context</p>

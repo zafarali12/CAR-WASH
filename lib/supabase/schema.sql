@@ -431,15 +431,15 @@ CREATE TRIGGER trigger_update_driver_rating
 
 -- Default Services
 INSERT INTO services (name, description, price, duration, category, features, is_active, sort_order) VALUES
-  ('Basic Wash', 'Exterior hand wash, rinse, and towel dry', 15.00, 30, 'basic_wash',
+  ('Basic Wash', 'Exterior hand wash, rinse, and towel dry', 40.00, 30, 'basic_wash',
    ARRAY['Exterior wash', 'Rinse', 'Towel dry'], true, 1),
-  ('Premium Wash', 'Full exterior wash with wax, tire shine, and window cleaning', 30.00, 60, 'premium_wash',
+  ('Premium Wash', 'Full exterior wash with wax, tire shine, and window cleaning', 80.00, 60, 'premium_wash',
    ARRAY['Exterior wash', 'Wax coating', 'Tire shine', 'Window clean', 'Air freshener'], true, 2),
-  ('Interior Clean', 'Full interior vacuum, dashboard wipe, and seat cleaning', 25.00, 45, 'interior_clean',
+  ('Interior Clean', 'Full interior vacuum, dashboard wipe, and seat cleaning', 70.00, 45, 'interior_clean',
    ARRAY['Interior vacuum', 'Dashboard wipe', 'Seat cleaning', 'Floor mats', 'Cup holders'], true, 3),
-  ('Full Detail', 'Complete interior + exterior detailing with clay bar and polish', 80.00, 180, 'full_detail',
+  ('Full Detail', 'Complete interior + exterior detailing with clay bar and polish', 200.00, 180, 'full_detail',
    ARRAY['Everything in Premium', 'Clay bar treatment', 'Paint polish', 'Interior shampoo', 'Leather conditioning'], true, 4),
-  ('Exterior Detail', 'Clay bar, machine polish, and ceramic coating', 60.00, 120, 'exterior_detail',
+  ('Exterior Detail', 'Clay bar, machine polish, and ceramic coating', 150.00, 120, 'exterior_detail',
    ARRAY['Clay bar', 'Machine polish', 'Ceramic coating', 'Trim restoration'], true, 5);
 
 -- Default Cancellation Reasons

@@ -190,7 +190,7 @@ export default function AdminDrivers() {
                     </div>
                   </td>
                   <td>{d.completed_jobs}</td>
-                  <td className="font-medium">${(d.total_earnings || 0).toFixed(0)}</td>
+                  <td className="font-medium">SAR {(d.total_earnings || 0).toFixed(0)}</td>
                   <td>
                     {d.is_blocked
                       ? <span className="badge-cancelled">Blocked</span>
@@ -261,7 +261,7 @@ export default function AdminDrivers() {
               {[
                 { label: 'Jobs Done', value: selected.completed_jobs },
                 { label: 'Rating', value: selected.rating?.toFixed(1) || '—' },
-                { label: 'Earnings', value: `$${(selected.total_earnings || 0).toFixed(0)}` },
+                { label: 'Earnings', value: `SAR ${(selected.total_earnings || 0).toFixed(0)}` },
               ].map(s => (
                 <div key={s.label} className="stat-card p-3 text-center">
                   <p className="text-xs text-gray-400">{s.label}</p>

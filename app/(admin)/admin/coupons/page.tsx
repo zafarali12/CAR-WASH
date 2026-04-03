@@ -134,7 +134,7 @@ export default function AdminCoupons() {
 
   function formatValue(c: any) {
     if (c.type === 'percentage') return `${c.value}% off`
-    if (c.type === 'fixed') return `$${c.value} off`
+    if (c.type === 'fixed') return `SAR ${c.value} off`
     return 'Free service'
   }
 
@@ -204,7 +204,7 @@ export default function AdminCoupons() {
               <p className="text-2xl font-bold text-primary-600 mb-1">{formatValue(c)}</p>
 
               <div className="space-y-1 text-xs text-gray-400 mb-4">
-                {c.min_order_value > 0 && <p>Min order: ${c.min_order_value}</p>}
+                {c.min_order_value > 0 && <p>Min order: SAR {c.min_order_value}</p>}
                 <p>Used: {c.used_count}{c.max_uses ? ` / ${c.max_uses}` : ' times'}</p>
                 <p>Valid: {format(new Date(c.valid_from), 'MMM d')} – {format(new Date(c.valid_until), 'MMM d, yyyy')}</p>
                 {c.per_user_limit && <p>Per user: {c.per_user_limit} use(s)</p>}
@@ -260,7 +260,7 @@ export default function AdminCoupons() {
                   <label className="label">Type</label>
                   <select className="input" value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value as any }))}>
                     <option value="percentage">Percentage (%)</option>
-                    <option value="fixed">Fixed Amount ($)</option>
+                    <option value="fixed">Fixed Amount (SAR)</option>
                     <option value="free_service">Free Service</option>
                   </select>
                 </div>
@@ -271,7 +271,7 @@ export default function AdminCoupons() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="label">Min Order ($)</label>
+                  <label className="label">Min Order (SAR)</label>
                   <input className="input" type="number" value={form.min_order_value} onChange={e => setForm(f => ({ ...f, min_order_value: e.target.value }))} />
                 </div>
                 <div>

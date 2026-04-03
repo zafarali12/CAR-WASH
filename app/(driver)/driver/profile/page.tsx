@@ -91,7 +91,7 @@ export default function DriverProfile() {
             <p className="text-xs text-gray-400">Jobs Done</p>
           </div>
           <div className="text-center p-3 bg-gray-50 rounded-xl">
-            <p className="font-bold text-lg">${(driver?.total_earnings || 0).toFixed(0)}</p>
+            <p className="font-bold text-lg">SAR {(driver?.total_earnings || 0).toFixed(0)}</p>
             <p className="text-xs text-gray-400">Earned</p>
           </div>
         </div>

@@ -41,7 +41,7 @@ export default function CustomerServices() {
   
   // Add Vehicle State
   const [showAddVehicle, setShowAddVehicle] = useState(false)
-  const [vehicleForm, setVehicleForm] = useState({ make: '', model: '', year: '', color: '', plate_number: '' })
+  const [vehicleForm, setVehicleForm] = useState({ make: '', model: '', color: '', plate_number: '' })
   const [vehicleSubmitting, setVehicleSubmitting] = useState(false)
 
   const supabase = createClient()
@@ -124,7 +124,7 @@ export default function CustomerServices() {
       return
     }
     if (selectedService && data.min_order_value > selectedService.price) {
-      toast.error(`Minimum order value is $${data.min_order_value}`)
+      toast.error(`Minimum order value is SAR ${data.min_order_value}`)
       setCouponLoading(false)
       return
     }
@@ -211,7 +211,6 @@ export default function CustomerServices() {
         .from('vehicles')
         .insert({
           ...vehicleForm,
-          year: parseInt(vehicleForm.year) || null,
           customer_id: customerId
         })
         .select()
@@ -291,7 +290,7 @@ export default function CustomerServices() {
                 </div>
               </div>
               <div className="text-right flex-shrink-0">
-                <p className="text-xl font-bold text-primary-600">${s.price}</p>
+                <p className="text-xl font-bold text-primary-600">SAR {s.price}</p>
               </div>
             </button>
           ))}
@@ -324,11 +323,7 @@ export default function CustomerServices() {
                   <label className="label">Model *</label>
                   <input className="input" placeholder="Corolla" value={vehicleForm.model} onChange={e => setVehicleForm({...vehicleForm, model: e.target.value})} />
                 </div>
-                <div>
-                  <label className="label">Year</label>
-                  <input className="input" type="number" placeholder="2022" value={vehicleForm.year} onChange={e => setVehicleForm({...vehicleForm, year: e.target.value})} />
-                </div>
-                <div>
+                <div className="col-span-2">
                   <label className="label">Color</label>
                   <input className="input" placeholder="White" value={vehicleForm.color} onChange={e => setVehicleForm({...vehicleForm, color: e.target.value})} />
                 </div>
@@ -503,10 +498,10 @@ export default function CustomerServices() {
           <div className="card p-4 mb-4">
             <h3 className="font-semibold mb-3">Price Breakdown</h3>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-gray-500">Service price</span><span>${selectedService.price}</span></div>
-              {discount > 0 && <div className="flex justify-between text-green-600"><span>Discount ({appliedCoupon.code})</span><span>-${discount.toFixed(2)}</span></div>}
+              <div className="flex justify-between"><span className="text-gray-500">Service price</span><span>SAR {selectedService.price}</span></div>
+              {discount > 0 && <div className="flex justify-between text-green-600"><span>Discount ({appliedCoupon.code})</span><span>-SAR {discount.toFixed(2)}</span></div>}
               <div className="flex justify-between font-semibold text-base pt-2 border-t border-gray-100">
-                <span>Total</span><span className="text-primary-600">${finalPrice.toFixed(2)}</span>
+                <span>Total</span><span className="text-primary-600">SAR {finalPrice.toFixed(2)}</span>
               </div>
             </div>
           </div>

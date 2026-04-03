@@ -131,7 +131,7 @@ export default function AdminCustomers() {
                     <td className="text-gray-500">{c.users?.phone || '—'}</td>
                     <td className="text-gray-500">{c.city || '—'}</td>
                     <td>{stats.totalBookings}</td>
-                    <td className="font-medium">${stats.totalSpent.toFixed(0)}</td>
+                    <td className="font-medium">SAR {stats.totalSpent.toFixed(0)}</td>
                     <td>{stats.vehicles}</td>
                     <td>
                       {c.is_blocked
@@ -192,7 +192,7 @@ export default function AdminCustomers() {
               {[
                 { label: 'Total Bookings', value: getStats(selected).totalBookings },
                 { label: 'Completed', value: getStats(selected).completedBookings },
-                { label: 'Total Spent', value: `$${getStats(selected).totalSpent.toFixed(0)}` },
+                { label: 'Total Spent', value: `SAR ${getStats(selected).totalSpent.toFixed(0)}` },
                 { label: 'Vehicles', value: getStats(selected).vehicles },
               ].map(s => (
                 <div key={s.label} className="stat-card p-3">

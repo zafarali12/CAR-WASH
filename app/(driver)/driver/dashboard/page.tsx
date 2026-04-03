@@ -289,7 +289,7 @@ export default function DriverDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Total Earnings", value: `$${stats.today.toFixed(0)}` },
+          { label: "Total Earnings", value: `SAR ${stats.today.toFixed(0)}` },
           { label: 'Total Jobs', value: stats.jobs },
           { label: 'Rating', value: stats.rating > 0 ? stats.rating.toFixed(1) : '—' },
         ].map(s => (
@@ -330,7 +330,7 @@ export default function DriverDashboard() {
             </div>
             <div className="flex justify-between font-semibold">
               <span>Earning</span>
-              <span className="text-green-600">${pendingRequest.final_price}</span>
+              <span className="text-green-600">SAR {pendingRequest.final_price}</span>
             </div>
           </div>
           <div className="flex gap-3">

@@ -8,7 +8,11 @@ import { createClient } from '@/lib/supabase/client'
 
 export default function LandingPage() {
   const { isLoaded, isSignedIn, user } = useUser()
-  const [landingServices, setLandingServices] = useState<any[]>([])
+  const [landingServices, setLandingServices] = useState<any[]>([
+    { id: 'basic', name: 'Basic Wash', price: 40, duration: 30, category: 'basic_wash', features: ['Exterior Hand Wash', 'Rinse & Dry', 'Tire Shine'] },
+    { id: 'premium', name: 'Premium Wash', price: 80, duration: 60, category: 'premium_wash', features: ['Full Exterior Wax', 'Window Polish', 'Interior Vacuum'] },
+    { id: 'detail', name: 'Full Detail', price: 200, duration: 180, category: 'full_detail', features: ['Deep Interior Clean', 'Engine Polish', 'Paint Restoration'] },
+  ])
   const [servicesLoaded, setServicesLoaded] = useState(false)
   
   const supabase = createClient()
@@ -22,7 +26,7 @@ export default function LandingPage() {
         .order('sort_order')
         .limit(3)
       
-      if (data) setLandingServices(data)
+      if (data && data.length > 0) setLandingServices(data)
       setServicesLoaded(true)
     }
     fetchLandingServices()
@@ -205,7 +209,7 @@ export default function LandingPage() {
                         <Clock size={12}/> {pkg.duration} min
                       </div>
                     </div>
-                    <div className="text-3xl font-black text-blue-500">${pkg.price}</div>
+                    <div className="text-3xl font-black text-blue-500">SAR {pkg.price}</div>
                   </div>
                   
                   <p className="text-sm font-bold opacity-60 mb-8 leading-relaxed">

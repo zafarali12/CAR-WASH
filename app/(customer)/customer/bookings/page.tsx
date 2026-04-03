@@ -190,9 +190,9 @@ export default function CustomerBookings() {
                 <span className="text-gray-400">{b.vehicles?.color} {b.vehicles?.make} {b.vehicles?.model}</span>
                 <div className="text-right">
                   {b.discount_amount > 0 && (
-                    <p className="text-xs text-gray-400 line-through">${b.total_price}</p>
+                    <p className="text-xs text-gray-400 line-through">SAR {b.total_price}</p>
                   )}
-                  <p className="font-semibold text-primary-600">${b.final_price}</p>
+                  <p className="font-semibold text-primary-600">SAR {b.final_price}</p>
                 </div>
               </div>
 

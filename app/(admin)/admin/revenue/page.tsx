@@ -111,9 +111,9 @@ export default function AdminRevenue() {
       {/* Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: 'Total Revenue', value: `$${totals.revenue.toLocaleString(undefined, { minimumFractionDigits: 0 })}` },
+          { label: 'Total Revenue', value: `SAR ${totals.revenue.toLocaleString(undefined, { minimumFractionDigits: 0 })}` },
           { label: 'Total Bookings', value: totals.bookings },
-          { label: 'Avg Order Value', value: `$${totals.avgOrderValue.toFixed(0)}` },
+          { label: 'Avg Order Value', value: `SAR ${totals.avgOrderValue.toFixed(0)}` },
           { label: 'Active Drivers', value: totals.drivers },
         ].map(s => (
           <div key={s.label} className="stat-card p-5">
@@ -137,7 +137,7 @@ export default function AdminRevenue() {
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
             <XAxis dataKey="date" tick={{ fontSize: 11 }} />
             <YAxis tick={{ fontSize: 11 }} />
-            <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} formatter={(v: any) => [`$${v}`, 'Revenue']} />
+            <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} formatter={(v: any) => [`SAR ${v}`, 'Revenue']} />
             <Area type="monotone" dataKey="revenue" stroke="#185fa5" strokeWidth={2} fill="url(#revGrad2)" />
           </AreaChart>
         </ResponsiveContainer>
@@ -153,7 +153,7 @@ export default function AdminRevenue() {
                 <div key={s.name}>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="font-medium">{s.name}</span>
-                    <span className="text-gray-500">${s.revenue.toFixed(0)} ({s.count} jobs)</span>
+                    <span className="text-gray-500">SAR {s.revenue.toFixed(0)} ({s.count} jobs)</span>
                   </div>
                   <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div
@@ -178,7 +178,7 @@ export default function AdminRevenue() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis type="number" tick={{ fontSize: 11 }} />
               <YAxis dataKey="name" type="category" tick={{ fontSize: 11 }} width={80} />
-              <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} formatter={(v: any) => [`$${v}`, 'Revenue']} />
+              <Tooltip contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }} formatter={(v: any) => [`SAR ${v}`, 'Revenue']} />
               <Bar dataKey="revenue" fill="#0f6e56" radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>

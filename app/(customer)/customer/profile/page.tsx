@@ -18,7 +18,7 @@ export default function CustomerProfile() {
   const [reviews, setReviews] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showVehicleModal, setShowVehicleModal] = useState(false)
-  const [vehicleForm, setVehicleForm] = useState({ make: '', model: '', year: '', color: '', plate_number: '' })
+  const [vehicleForm, setVehicleForm] = useState({ make: '', model: '', color: '', plate_number: '' })
   const [editVehicleId, setEditVehicleId] = useState<string | null>(null)
 
   const supabase = createClient()
@@ -51,7 +51,7 @@ export default function CustomerProfile() {
       toast.error('Fill required fields')
       return
     }
-    const payload = { ...vehicleForm, year: parseInt(vehicleForm.year) || null, customer_id: customer.id }
+    const payload = { ...vehicleForm, customer_id: customer.id }
     const { error } = editVehicleId
       ? await supabase.from('vehicles').update(payload).eq('id', editVehicleId)
       : await supabase.from('vehicles').insert(payload)
@@ -153,11 +153,11 @@ export default function CustomerProfile() {
             <div key={v.id} className="card p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-xl">🚗</div>
               <div className="flex-1">
-                <p className="font-semibold">{v.make} {v.model} {v.year && `(${v.year})`}</p>
+                <p className="font-semibold">{v.make} {v.model}</p>
                 <p className="text-sm text-gray-400">{v.color} · {v.plate_number}</p>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => { setEditVehicleId(v.id); setVehicleForm({ make: v.make, model: v.model, year: v.year?.toString() || '', color: v.color || '', plate_number: v.plate_number }); setShowVehicleModal(true) }} className="text-gray-400 hover:text-gray-600">
+                <button onClick={() => { setEditVehicleId(v.id); setVehicleForm({ make: v.make, model: v.model, color: v.color || '', plate_number: v.plate_number }); setShowVehicleModal(true) }} className="text-gray-400 hover:text-gray-600">
                   <Edit2 size={15} />
                 </button>
                 <button onClick={() => deleteVehicle(v.id)} className="text-red-400 hover:text-red-600">
@@ -166,7 +166,7 @@ export default function CustomerProfile() {
               </div>
             </div>
           ))}
-          <button className="btn-primary w-full" onClick={() => { setEditVehicleId(null); setVehicleForm({ make: '', model: '', year: '', color: '', plate_number: '' }); setShowVehicleModal(true) }}>
+          <button className="btn-primary w-full" onClick={() => { setEditVehicleId(null); setVehicleForm({ make: '', model: '', color: '', plate_number: '' }); setShowVehicleModal(true) }}>
             <Plus size={16} /> Add Vehicle
           </button>
         </div>
@@ -222,8 +222,7 @@ export default function CustomerProfile() {
             <div className="grid grid-cols-2 gap-3">
               <div><label className="label">Make *</label><input className="input" value={vehicleForm.make} onChange={e => setVehicleForm(f => ({ ...f, make: e.target.value }))} placeholder="Toyota" /></div>
               <div><label className="label">Model *</label><input className="input" value={vehicleForm.model} onChange={e => setVehicleForm(f => ({ ...f, model: e.target.value }))} placeholder="Corolla" /></div>
-              <div><label className="label">Year</label><input className="input" type="number" value={vehicleForm.year} onChange={e => setVehicleForm(f => ({ ...f, year: e.target.value }))} placeholder="2022" /></div>
-              <div><label className="label">Color</label><input className="input" value={vehicleForm.color} onChange={e => setVehicleForm(f => ({ ...f, color: e.target.value }))} placeholder="White" /></div>
+              <div className="col-span-2"><label className="label">Color</label><input className="input" value={vehicleForm.color} onChange={e => setVehicleForm(f => ({ ...f, color: e.target.value }))} placeholder="White" /></div>
             </div>
             <div><label className="label">Plate Number *</label><input className="input" value={vehicleForm.plate_number} onChange={e => setVehicleForm(f => ({ ...f, plate_number: e.target.value }))} placeholder="ABC-1234" /></div>
             <div className="flex gap-3">

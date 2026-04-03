@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         await supabase.from('notifications').insert({
           user_id: userId,
           title: 'Payment Successful',
-          message: `Your payment of $${(paymentIntent.amount / 100).toFixed(2)} has been confirmed.`,
+          message: `Your payment of SAR ${(paymentIntent.amount / 100).toFixed(2)} has been confirmed.`,
           type: 'booking_update',
           booking_id: bookingId,
         })

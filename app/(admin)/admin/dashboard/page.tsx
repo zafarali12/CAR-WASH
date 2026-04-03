@@ -135,8 +135,8 @@ export default function AdminDashboard() {
   const statCards = [
     {
       label: 'Total Revenue',
-      value: `$${stats.total_revenue.toLocaleString()}`,
-      sub: `$${stats.revenue_today.toFixed(0)} today`,
+      value: `SAR ${stats.total_revenue.toLocaleString()}`,
+      sub: `SAR ${stats.revenue_today.toFixed(0)} today`,
       icon: DollarSign,
       trend: stats.revenue_change,
       color: 'text-primary-600 bg-primary-50',
@@ -225,7 +225,7 @@ export default function AdminDashboard() {
               <YAxis tick={{ fontSize: 12 }} />
               <Tooltip
                 contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }}
-                formatter={(val: any) => [`$${val}`, 'Revenue']}
+                formatter={(val: any) => [`SAR ${val}`, 'Revenue']}
               />
               <Area type="monotone" dataKey="revenue" stroke="#185fa5" strokeWidth={2} fill="url(#revGrad)" />
             </AreaChart>
@@ -278,7 +278,7 @@ export default function AdminDashboard() {
                   <p className="text-xs text-gray-400">{b.services?.name} · {b.scheduled_date}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium">${b.final_price}</p>
+                  <p className="text-sm font-medium">SAR {b.final_price}</p>
                   <span className={statusColors[b.status] || 'badge'}>
                     {b.status.replace(/_/g, ' ')}
                   </span>

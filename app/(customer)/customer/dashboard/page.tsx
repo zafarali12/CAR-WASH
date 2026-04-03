@@ -21,7 +21,11 @@ const STATUS_LABELS: Record<string, string> = {
 export default function CustomerDashboard() {
   const { user } = useUser()
   const [activeBooking, setActiveBooking] = useState<any>(null)
-  const [services, setServices] = useState<any[]>([])
+  const [services, setServices] = useState<any[]>([
+    { id: 'basic', name: 'Basic Wash', price: 40, category: 'basic_wash' },
+    { id: 'premium', name: 'Premium Wash', price: 80, category: 'premium_wash' },
+    { id: 'interior', name: 'Interior Clean', price: 70, category: 'interior_clean' },
+  ])
   const [banners, setBanners] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [bannerIdx, setBannerIdx] = useState(0)
@@ -161,7 +165,7 @@ export default function CustomerDashboard() {
             <div className="flex items-center gap-2 text-gray-600">
               <span className="text-lg">{SERVICE_ICONS[activeBooking.services?.category] || '🚗'}</span>
               <span>{activeBooking.services?.name}</span>
-              <span className="ml-auto font-semibold text-primary-600">${activeBooking.final_price}</span>
+              <span className="ml-auto font-semibold text-primary-600">SAR {activeBooking.final_price}</span>
             </div>
             <div className="flex items-center gap-2 text-gray-500">
               <MapPin size={14} />
@@ -213,7 +217,7 @@ export default function CustomerDashboard() {
                 {SERVICE_ICONS[s.category] || '🚗'}
               </div>
               <h3 className="text-sm font-semibold text-gray-900">{s.name}</h3>
-              <p className="text-primary-600 font-bold text-base mt-0.5">${s.price}</p>
+              <p className="text-primary-600 font-bold text-base mt-0.5">SAR {s.price}</p>
               <p className="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
                 <Clock size={11} /> {s.duration} min
               </p>

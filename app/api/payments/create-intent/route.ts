@@ -37,7 +37,7 @@ export async function POST(req: Request) {
   // Create payment intent
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(booking.final_price * 100), // cents
-    currency: 'usd',
+    currency: 'sar',
     customer: customer.id,
     metadata: { booking_id: bookingId },
     automatic_payment_methods: { enabled: true },

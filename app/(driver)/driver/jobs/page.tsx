@@ -103,7 +103,7 @@ export default function DriverJobs() {
                   <p className="text-xs text-gray-400 mt-0.5">#{job.id.slice(0, 8).toUpperCase()}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-green-600">${job.final_price}</p>
+                  <p className="font-bold text-green-600">SAR {job.final_price}</p>
                   <span className={STATUS_COLORS[job.status] || 'badge-pending'}>{job.status.replace(/_/g, ' ')}</span>
                 </div>
               </div>

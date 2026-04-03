@@ -78,7 +78,7 @@ export default function BookingDetail() {
         <h1 className="text-lg font-semibold">{booking.services?.name}</h1>
         <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
           <span className="flex items-center gap-1"><Clock size={13} />{booking.scheduled_date} · {booking.scheduled_time?.slice(0, 5)}</span>
-          <span className="font-semibold text-primary-600">${booking.final_price}</span>
+          <span className="font-semibold text-primary-600">SAR {booking.final_price}</span>
         </div>
       </div>
 
@@ -173,12 +173,12 @@ export default function BookingDetail() {
       <div className="card p-4 mb-4">
         <h2 className="font-semibold text-sm mb-3">Payment</h2>
         <div className="space-y-2 text-sm">
-          <div className="flex justify-between"><span className="text-gray-400">Service</span><span>${booking.total_price}</span></div>
+          <div className="flex justify-between"><span className="text-gray-400">Service</span><span>SAR {booking.total_price}</span></div>
           {booking.discount_amount > 0 && (
-            <div className="flex justify-between text-green-600"><span>Discount</span><span>-${booking.discount_amount}</span></div>
+            <div className="flex justify-between text-green-600"><span>Discount</span><span>-SAR {booking.discount_amount}</span></div>
           )}
           <div className="flex justify-between font-semibold border-t border-gray-50 pt-2">
-            <span>Total</span><span className="text-primary-600">${booking.final_price}</span>
+            <span>Total</span><span className="text-primary-600">SAR {booking.final_price}</span>
           </div>
           <div className="flex justify-between text-xs text-gray-400">
             <span>Payment Status</span>

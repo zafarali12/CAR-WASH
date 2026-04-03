@@ -54,7 +54,7 @@ export default function AdminReports() {
           'Service': (b.services as any)?.name,
           'Vehicle': `${(b.vehicles as any)?.make} ${(b.vehicles as any)?.model}`,
           'Plate': (b.vehicles as any)?.plate_number,
-          'Amount': `$${b.final_price}`,
+          'Amount': `SAR ${b.final_price}`,
           'Status': b.status,
           'Payment': b.payment_status,
           'Address': b.address,
@@ -73,7 +73,7 @@ export default function AdminReports() {
           'Date': format(new Date(p.created_at), 'yyyy-MM-dd'),
           'Customer': (p.bookings as any)?.customers?.name,
           'Service': (p.bookings as any)?.services?.name,
-          'Amount': `$${p.amount}`,
+          'Amount': `SAR ${p.amount}`,
           'Payment Method': p.payment_method,
           'Status': p.status,
         }))
@@ -90,7 +90,7 @@ export default function AdminReports() {
           'Phone': d.phone,
           'Rating': d.rating?.toFixed(1) || '—',
           'Jobs Completed': d.completed_jobs,
-          'Total Earnings': `$${(d.total_earnings || 0).toFixed(0)}`,
+          'Total Earnings': `SAR ${(d.total_earnings || 0).toFixed(0)}`,
           'Status': d.is_available ? 'Online' : 'Offline',
           'Joined': format(new Date(d.created_at), 'yyyy-MM-dd'),
         }))
@@ -111,7 +111,7 @@ export default function AdminReports() {
             'City': c.city || '—',
             'Total Bookings': bookings.length,
             'Completed': bookings.filter((b: any) => b.status === 'completed').length,
-            'Total Spent': `$${spent.toFixed(0)}`,
+            'Total Spent': `SAR ${spent.toFixed(0)}`,
             'Joined': format(new Date(c.created_at), 'yyyy-MM-dd'),
           }
         })
@@ -137,7 +137,7 @@ export default function AdminReports() {
             'Category': s.category,
             'Total Bookings': s.bookings,
             'Completed': s.completed,
-            'Revenue': `$${s.revenue.toFixed(0)}`,
+            'Revenue': `SAR ${s.revenue.toFixed(0)}`,
             'Completion Rate': `${s.bookings ? Math.round((s.completed / s.bookings) * 100) : 0}%`,
           }))
       }

@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, Clock, DollarSign } from 'lucide-react'
+import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, Clock, Banknote } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 interface ServiceForm {
@@ -167,7 +167,7 @@ export default function AdminServices() {
 
               <div className="flex items-center gap-4 mb-3">
                 <div className="flex items-center gap-1 text-sm font-semibold text-primary-600">
-                  <DollarSign size={14} />
+                  <span className="text-[10px]">SAR</span>
                   {s.price}
                 </div>
                 <div className="flex items-center gap-1 text-sm text-gray-400">
@@ -216,8 +216,8 @@ export default function AdminServices() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="label">Price ($) *</label>
-                  <input className="input" type="number" value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} placeholder="30" />
+                  <label className="label">Price (SAR) *</label>
+                  <input className="input" type="number" value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} placeholder="80" />
                 </div>
                 <div>
                   <label className="label">Duration (min) *</label>

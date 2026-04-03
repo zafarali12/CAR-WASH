@@ -110,9 +110,9 @@ export default function DriverEarnings() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: 'Total Earned', value: `$${earnings.total.toFixed(0)}` },
+          { label: 'Total Earned', value: `SAR ${earnings.total.toFixed(0)}` },
           { label: 'Jobs Done', value: earnings.jobs },
-          { label: 'Avg per Job', value: `$${earnings.avg.toFixed(0)}` },
+          { label: 'Avg per Job', value: `SAR ${earnings.avg.toFixed(0)}` },
         ].map(s => (
           <div key={s.label} className="stat-card p-3 text-center">
             <p className="text-xs text-gray-400">{s.label}</p>
@@ -131,7 +131,7 @@ export default function DriverEarnings() {
             <YAxis tick={{ fontSize: 11 }} />
             <Tooltip
               contentStyle={{ borderRadius: 8, border: '1px solid #e5e7eb', fontSize: 12 }}
-              formatter={(v: any) => [`$${v}`, 'Earned']}
+              formatter={(v: any) => [`SAR ${v}`, 'Earned']}
             />
             <Bar dataKey="amount" fill="#0f6e56" radius={[4, 4, 0, 0]} />
           </BarChart>
@@ -149,14 +149,14 @@ export default function DriverEarnings() {
           <div className="space-y-2">
             {history.map(b => (
               <div key={b.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
-                <div className="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-xs font-bold">
-                  $
+                <div className="w-8 h-8 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-[10px] font-bold">
+                  SAR
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-medium">{b.services?.name}</p>
                   <p className="text-xs text-gray-400">{b.scheduled_date} · {b.scheduled_time?.slice(0, 5)}</p>
                 </div>
-                <p className="font-semibold text-green-600">${b.final_price}</p>
+                <p className="font-semibold text-green-600">SAR {b.final_price}</p>
               </div>
             ))}
           </div>

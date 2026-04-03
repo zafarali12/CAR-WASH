@@ -82,7 +82,7 @@ export default function BookingHistory() {
                      <Calendar size={12} />
                      {b.scheduled_date}
                    </div>
-                   <div className="text-sm font-bold text-gray-900">${b.final_price}</div>
+                   <div className="text-sm font-bold text-gray-900">SAR {b.final_price}</div>
                 </div>
               </Link>
              )
