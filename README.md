@@ -134,10 +134,6 @@ await clerkClient.users.updateUser(userId, {
 npm run dev
 ```
 
-Visit:
-- Customer: http://localhost:3000/customer/dashboard
-- Driver: http://localhost:3000/driver/dashboard
-- Admin: http://localhost:3000/admin/dashboard
 
 ---
 
